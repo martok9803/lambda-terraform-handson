@@ -45,10 +45,14 @@ export AWS_SECRET_ACCESS_KEY with your AWS secret access key
 export ACCOUNT_ARN=arn:aws:iam::*** : replace *** by your AWS account id
 You can connect to AWS console with your login and assume-role
 
+
 Get your credential
 source ./script-connect-aws.sh LASTMFACODE
+
 Create infrastructure
+
 The first time you use it localy, please follow this step:
+
 python ci-cd/init.py
 Launch script
 python ci-cd/start.py
