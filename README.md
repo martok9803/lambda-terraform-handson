@@ -11,6 +11,7 @@ unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_STS AWS_ACCESS_KEY_ID AWS_SECR
 Unsetting these variables is useful when you want to clear any existing AWS credentials and tokens from the environment. This could be done, for example, when you want to ensure that your current shell session doesn't accidentally use any AWS credentials from a previous session or if you're switching between multiple AWS accounts or roles. After running this script, the mentioned environment variables will have their values removed from the current shell session, making them unavailable for any subsequent AWS-related operations until they are set again.
 
 
+
 export USERNAME=***
 
 export AWS_DEFAULT_REGION=eu-west-1
@@ -27,11 +28,17 @@ export MFA_CODE=$1
 
 --With these environment variables set and exported, any subsequent commands or scripts run in the same shell session will be able to access and use these values. Keep in mind that sensitive information like AWS credentials should be handled with care, and it's essential to maintain security best practices when working with AWS resources.
 
+
+
 # Assume the IAM role with MFA and store the credentials in the aws_sts variable
 aws_sts=$(aws sts assume-role --role-arn $account_arn:role/$role_name --serial-number $account_arn:mfa/$username --query 'Credentials.[AccessKeyId,SecretAccessKey,SessionToken]' --output text)
 
+
+
 # Extract the individual components of the credentials from the aws_sts variable
 IFS=$'\t' read -r -a aws_sts_array <<< "$aws_sts"
+
+
 
 # Export the credentials as environment variables
 export AWS_ACCESS_KEY_ID="${aws_sts_array[0]}"
@@ -39,6 +46,8 @@ export AWS_ACCESS_KEY_ID="${aws_sts_array[0]}"
 export AWS_SECRET_ACCESS_KEY="${aws_sts_array[1]}"
 
 export AWS_SESSION_TOKEN="${aws_sts_array[2]}"
+
+
 
 --We use the read command with the -a option to read the values from the aws_sts variable and store them in an array aws_sts_array. The values are separated by tabs (specified by IFS=$'\t').
 
@@ -48,6 +57,8 @@ export AWS_SESSION_TOKEN="${aws_sts_array[2]}"
 
 
 You have to change:
+
+
 
 export USERNAME with your AWS login
 
@@ -62,11 +73,14 @@ You can connect to AWS console with your login and assume-role
 
 Get your credential
 
+
 source ./script-connect-aws.sh LASTMFACODE
 
 Create infrastructure
 
 The first time you use it localy, please follow this step:
+
+
 
 python ci-cd/init.py
 
