@@ -1,8 +1,11 @@
 Launch
 
+
 Create connect file
 
+
 Create a file in the root directory of this project.
+
 
 Name this file "script-connect-aws.sh", it'll be ignored by git. (cf .gitignor)
 
